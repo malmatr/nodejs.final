@@ -7,8 +7,13 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+const connectDB = require("./servers/db");
+
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Connect Database
+connectDB();
 
 // Middleware
 app.use(cors());
@@ -16,14 +21,17 @@ app.use(express.json());
 
 // Routes
 const helloRoutes = require("./routes/helloRoutes");
-app.use("/api/hello", helloRoutes);
+const statusRoutes = require("./routes/statusRoutes");
+const userRoutes = require("./routes/userRoutes");
 
-// Test root route
+app.use("/api/hello", helloRoutes);
+app.use("/api/status", statusRoutes);
+app.use("/api/users", userRoutes);
+
 app.get("/", (req, res) => {
-  res.send("Server is running");
+  res.send("NodeJS Final Project Server Running");
 });
 
-// Start server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
